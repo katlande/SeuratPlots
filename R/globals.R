@@ -1,0 +1,1 @@
+utils::globalVariables(c("annot_y", "xpos", "polygonX", "polygonY", "cell", "WORKINGFILLVAR", "Details", "count", "distance"))

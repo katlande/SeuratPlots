@@ -20,19 +20,34 @@ PlotPolygons <- function(coordDF, fillVar, border_color="black", fillColor=NULL,
       ggplot2::theme(plot.title=ggplot2::element_blank(), legend.position = legend)+
       ggplot2::geom_polygon(linewidth = 0.5, color=border_color) -> p
     
+    
     if(is.null(fillColor)){
-      colVec <- c("#FCBBA1", "#FB6A4A", "#CB181D", "#67000D")
+      
+      if(identical(class(coordDF$WORKINGFILLVAR), "numeric")){
+        colVec <- c("#FCBBA1", "#FB6A4A", "#CB181D", "#67000D")
+        
+      } else {
+        colVec <- grDevices::colorRampPalette(RColorBrewer::brewer.pal(6, "Spectral"))(length(unique(coordDF$WORKINGFILLVAR)))
+      }
+      
     } else {
       colVec <- fillColor
     }
     
-    if(is.null(fill_lims)){
-      p+ ggplot2::scale_fill_gradientn(legend.name, colors=colVec) -> p
-    } else{
-      p+ ggplot2::scale_fill_gradientn(legend.name, colors=colVec, limits=fill_lims) -> p
-    } 
-  } else {
+    if(identical(class(coordDF$WORKINGFILLVAR), "numeric")){
+      if(is.null(fill_lims)){
+        p+ ggplot2::scale_fill_gradientn(legend.name, colors=colVec) -> p
+      } else{
+        p+ ggplot2::scale_fill_gradientn(legend.name, colors=colVec, limits=fill_lims) -> p
+      } 
+    } else {
+      p+ ggplot2::scale_fill_manual(legend.name, values=colVec) -> p
+    }
     
+    
+    
+    
+  } else {
     ggplot2::ggplot(coordDF, ggplot2::aes(x = polygonX, y = polygonY, group = cell, fill=WORKINGFILLVAR)) +
       ggplot2::theme_void()+
       ggplot2::theme(plot.title=ggplot2::element_blank(), legend.position = legend)+

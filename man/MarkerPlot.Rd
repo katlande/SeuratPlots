@@ -15,6 +15,7 @@ Plots an annotated and optionally clustered dotplot used a set of user-defined a
 \item{assay}{Assay of the Seurat object to use for values, default="RNA"}
 \item{show.annotations}{\code{boolean}, whether or not to label annotations, default=\code{TRUE}}
 \item{cluster}{\code{boolean}, whether or not to cluster the x axis by correlation default=\code{TRUE}}
+\item{bump_annot}{\code{numeric}, y-axis adjustment value for annotation centering. Shouldn't need to be modified; default=0.5}
 }
 \value{
 Returns a grob containing a dotplot of input genes.

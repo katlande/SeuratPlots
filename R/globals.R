@@ -1,1 +1,2 @@
-utils::globalVariables(c("annot_y", "xpos", "polygonX", "polygonY", "cell", "WORKINGFILLVAR", "Details", "count", "distance"))
+utils::globalVariables(c("annot_y", "xpos", "polygonX", "polygonY", "cell", "WORKINGFILLVAR", "Details", "count", "distance",
+                         "split.by", "seed.col", "Group", "SeedSample", "SEEDCOLUMN", ""))

@@ -11,5 +11,5 @@ Depends: R (>= 3.5.0)
 URL: https://github.com/katlande/SeuratPlots
 BugReports: https://github.com/katlande/SeuratPlots/issues
 biocViews:
-Imports: Seurat, ggplot2, dplyr, tibble, RColorBrewer, patchwork, ggpubr, magrittr, reshape2, stats, methods
+Imports: Seurat, ggplot2, dplyr, tibble, RColorBrewer, patchwork, ggpubr, magrittr, reshape2, stats, methods, tidyr, RANN
 RoxygenNote: 7.3.2

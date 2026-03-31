@@ -14,7 +14,10 @@ prepStack <- function(p, coordDF, first=F){
   
   prep <- p+
     ggplot2::coord_cartesian(ylim = FOVlims$y, xlim = FOVlims$x, expand = T)+
-    ggplot2::theme(legend.position = "none")
+    ggplot2::theme(legend.position = "none", 
+                   plot.title=element_blank(), 
+                   plot.subtitle=element_blank(), 
+                   plot.caption=element_blank()) # remove features that change the relative position of plots
   
   if(first==F){
     return(patchwork::inset_element(prep, left = 0, right=1, top=1, bottom=0, align_to = "panel"))

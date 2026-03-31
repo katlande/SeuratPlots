@@ -175,7 +175,7 @@ cluster_mat <- function(mat, distance="correlation", method="ward.D2"){
 #' @importFrom magrittr %>%
 #' @export
 MarkerPlot <- function(obj, genes, margin_factor=0.5, maxsize=4, label.fontsize=3, 
-                       assay="RNA", show.annotations=T, cluster=T){
+                       assay="RNA", show.annotations=T, cluster=T, bump_annot=0.5){
   
   genes <- stats::setNames(genes[c(1,2)], c("Gene", "Details"))
   genes <- genes[genes$Gene %in% row.names(obj@assays[[assay]]),]
@@ -189,6 +189,7 @@ MarkerPlot <- function(obj, genes, margin_factor=0.5, maxsize=4, label.fontsize=
   tmp <- tmp[order(tmp$Details),]
   tmp$cumsum <- cumsum(tmp$index)
   tmp$annot_y <- tmp$cumsum - (0.5*(tmp$index))
+  tmp$annot_y <- tmp$annot_y + bump_annot
   tmp$xpos <- length(unique(Seurat::Idents(obj)))+1
   
   intersects <- cumsum(as.numeric(table(genes$Details)))+0.5

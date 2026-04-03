@@ -1,6 +1,6 @@
 #' @export
 findNeighbors <- function(seuratObj, seed.col=NULL, nNeigh=8, split.by=NULL, 
-                          xname=NULL, yname=NULL, neighborCol="isNeighbor"){
+                          xname=NULL, yname=NULL, neighborCol="isNeighbor", max.dist=NULL){
   
   meta <- seuratObj@meta.data
   
@@ -9,6 +9,12 @@ findNeighbors <- function(seuratObj, seed.col=NULL, nNeigh=8, split.by=NULL,
     meta <- meta[-c(which(colnames(meta) == neighborCol))]
   }
   
+  
+  if(! is.null(max.dist) & is.numeric(max.dist)){
+    message(paste("Limiting neighborhoods to a maximum distance of", max.dist, "from each seed."))
+  }else{
+    message("No maximum distance set.")
+  }
   
   meta$isNeighbourColNew <- FALSE
   colnames(meta)[which(colnames(meta) == seed.col)] <- "SEEDCOLUMN"
@@ -35,11 +41,24 @@ findNeighbors <- function(seuratObj, seed.col=NULL, nNeigh=8, split.by=NULL,
   if(nrow(hits) >0){
     for(i in 1:nrow(hits)){
       
-      rn_hits <- row.names(oneSamp)[as.numeric(RANN::nn2(query=hits[c("x", "y")][i,], 
-                                                         data=oneSamp[c("x", "y")], 
-                                                         k=(nNeigh+1))[[1]])]
-      rn <- rn_hits[!rn_hits %in% row.names(hits)[i]]
       
+      if(! is.null(max.dist) & is.numeric(max.dist)){
+        rn_hits <- row.names(oneSamp)[as.numeric(RANN::nn2(query=hits[c("x", "y")][i,], 
+                                                           data=oneSamp[c("x", "y")], 
+                                                           searchtype = "radius",
+                                                           radius=max.dist,
+                                                           k=(nNeigh+1))[[1]])]
+      } else {
+        rn_hits <- row.names(oneSamp)[as.numeric(RANN::nn2(query=hits[c("x", "y")][i,], 
+                                                           data=oneSamp[c("x", "y")], 
+                                                           k=(nNeigh+1))[[1]])]
+      }
+      
+      
+      
+      
+      
+      rn <- rn_hits[!rn_hits %in% row.names(hits)[i]]
       meta$isNeighbourColNew[row.names(meta)%in%rn] <- TRUE
     }
   } else {
@@ -66,4 +85,3 @@ findNeighbors <- function(seuratObj, seed.col=NULL, nNeigh=8, split.by=NULL,
   seuratObj@meta.data <- meta
   return(seuratObj)
 }
-
